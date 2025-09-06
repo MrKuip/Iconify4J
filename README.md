@@ -54,4 +54,4 @@ public class TestView
 
 Execute 'gradlew run' for view of all available icon sets:
 
-<img width="1570" height="910" alt="image" src="https://github.com/user-attachments/assets/c2eb35d9-49e6-4628-8b79-6bf3625bbc05" />
+<img width="1274" height="874" alt="image" src="https://github.com/user-attachments/assets/2c219aa7-68fa-47c6-bcd2-06821a255cfa" />
