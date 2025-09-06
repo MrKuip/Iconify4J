@@ -2,6 +2,10 @@
 Iconify icons for java
 
 JavaFX example:
+
+<img width="254" height="199" alt="image" src="https://github.com/user-attachments/assets/427d4299-bbed-48f1-ad07-b74e273d2d38" />
+
+The code:
 <pre>
 package org.kku.iconify.main;
 
@@ -46,5 +50,8 @@ public class TestView
   }
 }
 </pre>
-Execute 'gradlew run' for view of all available icon sets
+
+
+Execute 'gradlew run' for view of all available icon sets:
+
 <img width="1570" height="910" alt="image" src="https://github.com/user-attachments/assets/c2eb35d9-49e6-4628-8b79-6bf3625bbc05" />
