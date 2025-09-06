@@ -1,0 +1,80 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
+plugins {
+  id 'java-library'
+  id 'eclipse'
+  id 'application'
+  id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group = "org.kku"
+version = "1.0.1"
+
+defaultTasks 'jar'
+
+apply from: 'build-eclipse.gradle'
+
+repositories {
+  mavenCentral()
+}
+
+javafx {
+    version = "17"
+    modules = [ 'javafx.controls', 'javafx.swing' ]
+}
+
+java {
+  withJavadocJar()
+  withSourcesJar()
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
+
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
+  }
+}
+
+test
+{
+  useJUnitPlatform()
+  testLogging {
+    showStandardStreams = true 
+    afterTest { descriptor , result -> 
+      logger.lifecycle("Test: " + descriptor.getClassName() + " " + descriptor.getName() + " -> " + result)
+    }
+  }
+}
+
+dependencies {
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+  implementation 'com.miglayout:miglayout-javafx:11.4.2'
+  implementation files('lib/jsvg-javafx-2.0.1-SNAPSHOT.jar')
+  implementation files('lib/jsvg-2.0.1-SNAPSHOT.jar')
+
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.13.2'
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+application {
+  mainClass.set('org.kku.fonticons.main.IconViewer');
+  mainModule.set('org.kku.fonticons');
+}
+
+tasks.jar {
+  manifest {
+   attributes 'Implementation-Title': 'FontIcons (material design)',
+              'Implementation-Version': version
+  }
+}
+
+tasks.register("iconify", org.kku.fonticons.iconify.IconifyTask) {
+    destinationDir.set(layout.projectDirectory.dir("src/main/resources/module-resources/iconify"))
+    collectionURL.set("https://github.com/iconify/icon-sets/raw/refs/heads/master/collections.json")
+}
+
+tasks.named("processResources") {
+    dependsOn(tasks.named("iconify"))
+}
+

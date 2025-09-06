@@ -1,0 +1,46 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
+plugins {
+  id 'java-library'
+  id 'application'
+  id 'eclipse'
+}
+
+group = "org.kku"
+version = "1.0.1"
+
+defaultTasks 'jar'
+
+repositories {
+  mavenCentral()
+}
+
+java {
+  withJavadocJar()
+  withSourcesJar()
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
+}
+
+test
+{
+  useJUnitPlatform()
+  testLogging {
+    showStandardStreams = true 
+    afterTest { descriptor , result -> 
+      logger.lifecycle("Test: " + descriptor.getClassName() + " " + descriptor.getName() + " -> " + result)
+    }
+  }
+}
+
+dependencies {
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+  implementation gradleApi()
+
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.13.2'
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+

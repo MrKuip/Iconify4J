@@ -1,0 +1,10 @@
+buildSrc/bin/
+/bin/
+.classpath
+.gradle/
+.project
+.settings/
+build/
+tags
+
+/.metadata/
