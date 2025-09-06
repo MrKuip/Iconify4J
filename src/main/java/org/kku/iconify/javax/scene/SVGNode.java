@@ -1,10 +1,10 @@
-package org.kku.fonticons.javax.scene;
+package org.kku.iconify.javax.scene;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import org.kku.fonticons.data.IconSetData.Flip;
-import org.kku.fonticons.data.IconSetData.Rotate;
-import org.kku.fonticons.ui.FxIcon;
+import org.kku.iconify.data.IconSetData.Flip;
+import org.kku.iconify.data.IconSetData.Rotate;
+import org.kku.iconify.ui.FxIcon;
 import com.github.weisj.jsvg.SVGDocument;
 import com.github.weisj.jsvg.parser.LoaderContext;
 import com.github.weisj.jsvg.parser.SVGLoader;

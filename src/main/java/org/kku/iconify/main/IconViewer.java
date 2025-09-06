@@ -1,4 +1,4 @@
-package org.kku.fonticons.main;
+package org.kku.iconify.main;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -9,14 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.kku.fonticons.data.IconSetData;
-import org.kku.fonticons.data.IconSetData.IconData;
-import org.kku.fonticons.data.IconSetData.IconData.Alias;
-import org.kku.fonticons.data.IconSetData.IconData.Category;
-import org.kku.fonticons.main.view.SVGEditor;
-import org.kku.fonticons.scene.control.TabPaneNode;
-import org.kku.fonticons.ui.FxIcon;
-import org.kku.fonticons.ui.FxIcon.IconSize;
+import org.kku.iconify.data.IconSetData;
+import org.kku.iconify.data.IconSetData.IconData;
+import org.kku.iconify.data.IconSetData.IconData.Alias;
+import org.kku.iconify.data.IconSetData.IconData.Category;
+import org.kku.iconify.main.view.SVGEditor;
+import org.kku.iconify.scene.control.TabPaneNode;
+import org.kku.iconify.ui.FxIcon;
+import org.kku.iconify.ui.FxIcon.IconSize;
 import org.tbee.javafx.scene.layout.MigPane;
 import javafx.application.Application;
 import javafx.beans.property.SimpleIntegerProperty;

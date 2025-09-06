@@ -58,8 +58,8 @@ dependencies {
 }
 
 application {
-  mainClass.set('org.kku.fonticons.main.IconViewer');
-  mainModule.set('org.kku.fonticons');
+  mainClass.set('org.kku.iconify.main.IconViewer');
+  mainModule.set('org.kku.iconify');
 }
 
 tasks.jar {
@@ -69,7 +69,7 @@ tasks.jar {
   }
 }
 
-tasks.register("iconify", org.kku.fonticons.iconify.IconifyTask) {
+tasks.register("iconify", org.kku.iconify.IconifyTask) {
     destinationDir.set(layout.projectDirectory.dir("src/main/resources/module-resources/iconify"))
     collectionURL.set("https://github.com/iconify/icon-sets/raw/refs/heads/master/collections.json")
 }

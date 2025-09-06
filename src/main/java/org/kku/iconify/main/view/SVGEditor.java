@@ -1,4 +1,4 @@
-package org.kku.fonticons.main.view;
+package org.kku.iconify.main.view;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -7,8 +7,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import org.kku.fonticons.javax.scene.SVGNode;
-import org.kku.fonticons.ui.FxIcon;
+import org.kku.iconify.javax.scene.SVGNode;
+import org.kku.iconify.ui.FxIcon;
 import org.tbee.javafx.scene.layout.MigPane;
 import javafx.scene.Node;
 import javafx.scene.control.Button;

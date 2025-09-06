@@ -1,9 +1,9 @@
-package org.kku.fonticons.main;
+package org.kku.iconify.main;
 
 import java.io.IOException;
-import org.kku.fonticons.ui.FxIcon;
-import org.kku.fonticons.ui.FxIcon.IconAlignment;
-import org.kku.fonticons.ui.FxIcon.IconSize;
+import org.kku.iconify.ui.FxIcon;
+import org.kku.iconify.ui.FxIcon.IconAlignment;
+import org.kku.iconify.ui.FxIcon.IconSize;
 import org.tbee.javafx.scene.layout.MigPane;
 import javafx.application.Application;
 import javafx.collections.FXCollections;

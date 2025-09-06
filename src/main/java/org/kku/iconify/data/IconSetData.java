@@ -1,4 +1,4 @@
-package org.kku.fonticons.data;
+package org.kku.iconify.data;
 
 import java.io.InputStream;
 import java.util.ArrayList;

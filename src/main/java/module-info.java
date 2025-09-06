@@ -1,4 +1,4 @@
-module org.kku.fonticons
+module org.kku.iconify
 {
   requires java.logging;
   requires transitive javafx.graphics;
@@ -10,6 +10,6 @@ module org.kku.fonticons
   requires com.github.weisj.jsvg;
   requires com.fasterxml.jackson.databind;
   
-  exports org.kku.fonticons.ui;
-  exports org.kku.fonticons.main;
+  exports org.kku.iconify.ui;
+  exports org.kku.iconify.main;
 }

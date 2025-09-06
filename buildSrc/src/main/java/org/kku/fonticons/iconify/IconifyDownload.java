@@ -1,4 +1,4 @@
-package org.kku.fonticons.iconify;
+package org.kku.iconify;
 
 import java.io.BufferedWriter;
 import java.io.InputStream;

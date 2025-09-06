@@ -1,9 +1,9 @@
-package org.kku.fonticons.data;
+package org.kku.iconify.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import org.kku.fonticons.data.IconSetData.Rotate;
-import org.kku.fonticons.data.IconSetData.Flip;
+import org.kku.iconify.data.IconSetData.Rotate;
+import org.kku.iconify.data.IconSetData.Flip;
 
 class IconSetDataTest
 {

@@ -1,4 +1,4 @@
-package org.kku.fonticons.scene.control;
+package org.kku.iconify.scene.control;
 
 import javafx.scene.Node;
 import javafx.scene.control.Tab;

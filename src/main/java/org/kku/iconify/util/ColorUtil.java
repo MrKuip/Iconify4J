@@ -1,4 +1,4 @@
-package org.kku.fonticons.util;
+package org.kku.iconify.util;
 
 import javafx.scene.paint.Color;
 
