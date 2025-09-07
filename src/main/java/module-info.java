@@ -11,4 +11,5 @@ module org.kku.iconify
   requires com.fasterxml.jackson.databind;
 
   exports org.kku.iconify.ui;
+  exports org.kku.iconify.main to javafx.graphics;
 }
