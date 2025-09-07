@@ -644,12 +644,7 @@ public class IconSetData
       JsonNode rootNode;
 
       rootNode = reader.readTree(IconSetData.class.getResourceAsStream(url));
-      JsonNode a = rootNode.path("icon-sets");
-      a.forEach(System.out::println);
-      
       rootNode.path("icon-sets").forEach(idNode -> {
-        System.out.print(idNode);
-        System.out.print(idNode.asText());
         result.add(idNode.asText());
       });
     }
