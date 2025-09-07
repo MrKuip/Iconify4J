@@ -11,8 +11,8 @@ Learn about size(), color() properties.
 <pre>
 
     button = new Button("", new FxIcon("mdi-filter").getIconNode());
-    label = new Label("", new FxIcon("ant-design-filter-twotone").size(IconSize.VERY_LARGE).getIconNode());
-    button3 = new Button("", new FxIcon("streamline-ultimate-color-filter-1").size(IconSize.SUPER_LARGE).color(Color.PURPLE).getIconNode());
+    label = new Label("", new FxIcon("ant-design-filter-twotone").size(IconSize.BIG).getIconNode());
+    button3 = new Button("", new FxIcon("streamline-ultimate-color-filter-1").size(IconSize.HUGE).color(Color.PURPLE).getIconNode());
     
 </pre>
 
