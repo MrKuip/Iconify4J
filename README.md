@@ -3,10 +3,10 @@ Iconify icons for java.
 see [iconify website](https://icon-sets.iconify.design/) for all available icon sets.  
 The animated icons in the sets do not work (yet)  
 
-## JavaFX example:
+## JavaFX examples
 
 
-Example adding graphics to Button and Label.  
+**Example adding graphics to Button and Label**  
 Learn about size(), color() properties.
 <pre>
 
@@ -18,7 +18,11 @@ Learn about size(), color() properties.
 
 <img width="254" height="199" alt="image" src="https://github.com/user-attachments/assets/427d4299-bbed-48f1-ad07-b74e273d2d38" />
 
-Example adding badges to an Icon. Learn about addBadge() method. 
+  
+  
+  
+**Example adding badges to an Icon**  
+Learn about addBadge() method. 
 <pre>
 
     closeIcon = new FxIcon("mdi-close-thick").color(Color.RED).size(48.0);
