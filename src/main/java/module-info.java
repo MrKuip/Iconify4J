@@ -1,4 +1,4 @@
-module org.kku.iconify
+module org.kku.iconify4j
 {
   requires java.logging;
   requires transitive javafx.graphics;
