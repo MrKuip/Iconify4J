@@ -49,22 +49,20 @@ public class FxIcon
 
   public FxIcon size(IconSize size)
   {
-    return size(size.getSize());
+    setSize(size);
+    return this;
   }
 
   public FxIcon size(double size)
   {
-    return size(new Dimension2D(size, size));
+    setSize(size);
+    return this;
   }
 
   public FxIcon size(Dimension2D size)
   {
-    FxIcon copy;
-
-    copy = new FxIcon(this);
-    copy.setSize(size);
-
-    return copy;
+    setSize(size);
+    return this;
   }
 
   public void setSize(IconSize size)
@@ -89,17 +87,14 @@ public class FxIcon
 
   public FxIcon color(IconColor color)
   {
-    return color(color.getColor());
+    setColor(color);
+    return this;
   }
 
   public FxIcon color(Color color)
   {
-    FxIcon copy;
-
-    copy = new FxIcon(this);
-    copy.setColor(color);
-
-    return copy;
+    setColor(color);
+    return this;
   }
 
   public void setColor(IconColor color)
@@ -120,7 +115,7 @@ public class FxIcon
   public void addBadge(IconAlignment alignment, FxIcon icon, double scale)
   {
     icon = new FxIcon(icon);
-    if (scale > 0.0)
+    if(scale > 0.0)
     {
       icon.size(new Dimension2D((getSize().getWidth() * scale), getSize().getHeight() * scale));
     }
