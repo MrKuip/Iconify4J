@@ -30,6 +30,10 @@ Example adding badges to an Icon. Learn about addBadge() method.
 <img width="148" height="144" alt="image" src="https://github.com/user-attachments/assets/2eabb171-2931-4399-97af-d122ff9e618f" />
 
 ## IconViewer
-Execute 'gradlew run' to inspect all available icon sets:
+Clone the repository and execute 'gradlew run' to inspect all available icon sets:
+<pre>
+    git clone https://github.com/MrKuip/Iconify4J.git
+    ./gradlew run
+</pre>
 
 <img width="1274" height="874" alt="image" src="https://github.com/user-attachments/assets/2c219aa7-68fa-47c6-bcd2-06821a255cfa" />
