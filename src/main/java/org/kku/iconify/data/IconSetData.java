@@ -13,10 +13,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -32,8 +30,8 @@ public class IconSetData
   private static Flip ICONIFY_DEFAULT_HFLIP = Flip.FALSE;
   private static Flip ICONIFY_DEFAULT_VFLIP = Flip.FALSE;
 
-  private static Map<String, IconSetData> m_iconSetDataByIdMap;
-  private static Collection<IconSetData> m_iconSetDataCollection;
+  private static Map<String, IconSetDataHolder> m_iconSetDataByIdMap;
+  private static List<IconSetData> m_iconSetDataList;
   private static Set<String> m_allCategoryList = new HashSet<>();
   public static final String ALL = "ALL";
 
@@ -334,6 +332,41 @@ public class IconSetData
   {
     return getName().compareTo(ifd.getName());
   }
+  
+  public static class IconSetDataHolder
+  {
+    private final String mi_id;
+    private final String mi_prefix;
+    private Supplier<IconSetData> mi_iconSetDataSupplier;
+    private IconSetData mi_iconSetData;
+    
+    public IconSetDataHolder(String id, String prefix, Supplier<IconSetData> iconSetDataSupplier)
+    {
+      mi_id = id;
+      mi_prefix = prefix;
+      mi_iconSetDataSupplier = iconSetDataSupplier;
+    }
+    
+    public String getId()
+    {
+      return mi_id;
+    }
+    
+    public String getPrefix()
+    {
+      return mi_prefix;
+    }
+    
+    public IconSetData getIconSetData()
+    {
+      if(mi_iconSetData == null )
+      {
+        mi_iconSetData = mi_iconSetDataSupplier.get();
+      }
+      
+      return mi_iconSetData;
+    }
+  }
 
   public class IconData
       implements Comparable<IconData>
@@ -572,53 +605,53 @@ public class IconSetData
 
   public static synchronized Collection<IconSetData> getIconSetDataCollection()
   {
-    if (m_iconSetDataCollection == null)
+    if (m_iconSetDataList == null)
     {
-      m_iconSetDataCollection = getIconSetDataByIdMap().values();
+      m_iconSetDataList = getIconSetDataByIdMap().values().stream().map(IconSetDataHolder::getIconSetData).collect(Collectors.toList());
     }
 
-    return m_iconSetDataCollection;
+    return m_iconSetDataList;
   }
 
-  public static synchronized Map<String, IconSetData> getIconSetDataByIdMap()
+  public static synchronized Map<String, IconSetDataHolder> getIconSetDataByIdMap()
   {
     if (m_iconSetDataByIdMap == null)
     {
-      IconSetData allIconSetData;
-
       m_iconSetDataByIdMap = new LinkedHashMap<>();
+      m_iconSetDataByIdMap.put(ALL, new IconSetDataHolder(ALL, "all",  () -> generateAll()));
 
-      allIconSetData = new IconSetData();
-      allIconSetData.setId(ALL);
-      allIconSetData.setName("All");
-      m_iconSetDataByIdMap.put(allIconSetData.getId(), allIconSetData);
-
-      for (String name : parseIconifyIconSets())
+      for (String id : parseIconifyIconSets())
       {
-        parseIconify("/module-resources/iconify/" + name + ".json");
+        m_iconSetDataByIdMap.put(id, new IconSetDataHolder(id, id, () -> parseIconify(id)));
       }
     }
     return m_iconSetDataByIdMap;
   }
-
+  
   private static List<String> parseIconifyIconSets()
   {
+    ObjectReader reader;
+    String url;
     List<String> result;
-
+    
+    url = "/module-resources/iconify/IconifyIconSets.json";
+    reader = new ObjectMapper().reader();
     result = new ArrayList<>();
-    try (InputStream is = IconSetData.class.getResourceAsStream("/module-resources/iconify/IconifyIconSets.json");
-        JsonParser parser = new JsonFactory().createParser(is))
+    
+    System.out.println("parseIconify: " + url);
+    try (InputStream is = IconSetData.class.getResourceAsStream(url))
     {
-      while (parser.nextToken() != null)
-      {
-        JsonToken token;
+      JsonNode rootNode;
 
-        token = parser.currentToken();
-        if (token == JsonToken.VALUE_STRING)
-        {
-          result.add(parser.getValueAsString());
-        }
-      }
+      rootNode = reader.readTree(IconSetData.class.getResourceAsStream(url));
+      JsonNode a = rootNode.path("icon-sets");
+      a.forEach(System.out::println);
+      
+      rootNode.path("icon-sets").forEach(idNode -> {
+        System.out.print(idNode);
+        System.out.print(idNode.asText());
+        result.add(idNode.asText());
+      });
     }
     catch (Exception e)
     {
@@ -629,12 +662,26 @@ public class IconSetData
     return result;
   }
 
-  private static void parseIconify(String url)
+  private static IconSetData generateAll()
+  {
+    IconSetData all;
+    
+      all= new IconSetData();
+      all.setId(ALL);
+      all.setName("All");
+      
+      return all;
+  }
+  
+  private static IconSetData parseIconify(String name)
   {
     ObjectReader reader;
+    String url;
 
+    url = "/module-resources/iconify/" + name + ".json";
     reader = new ObjectMapper().reader();
-
+    
+    System.out.println("parseIconify: " + url);
     try (InputStream is = IconSetData.class.getResourceAsStream(url))
     {
       JsonNode rootNode;
@@ -668,8 +715,6 @@ public class IconSetData
       iconSetData.setCategory(infoNode.path("category").asText());
       iconSetData.setLicenseName(infoNode.path("license").path("spdx").asText());
       iconSetData.setLicenseURL(infoNode.path("license").path("url").asText());
-
-      m_iconSetDataByIdMap.put(iconSetData.getId(), iconSetData);
 
       rootNode.path("icons").properties().stream().forEach(e -> {
         String iconName;
@@ -747,23 +792,25 @@ public class IconSetData
         });
       });
 
+      return iconSetData;
     }
     catch (Exception e)
     {
       System.err.println("Error parsing JSON: " + e.getMessage());
       e.printStackTrace();
     }
+    
+    return null;
   }
 
   public static IconData searchIconData(String iconId)
   {
-    Optional<IconData> iconData;
-
-    iconData = getIconSetDataCollection().stream().map(iconSet -> iconSet.getIconDataByIdMap().get(iconId))
-        .filter(Objects::nonNull).findFirst();
-    if (iconData.isPresent())
+    Optional<IconSetDataHolder> iconSetDataHolder;
+    
+    iconSetDataHolder = getIconSetDataByIdMap().values().stream().filter(holder -> iconId.startsWith(holder.getPrefix())).findFirst();
+    if(iconSetDataHolder.isPresent())
     {
-      return iconData.get();
+      return iconSetDataHolder.get().getIconSetData().getIconDataByIdMap().get(iconId);
     }
 
     return null;

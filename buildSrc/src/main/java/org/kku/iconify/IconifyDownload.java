@@ -138,6 +138,7 @@ class IconifyDownload
     {
       return mi_lastModification;
     }
+    
   }
 
   private void createIconSetList(String lastModifiedFileJson) throws Exception

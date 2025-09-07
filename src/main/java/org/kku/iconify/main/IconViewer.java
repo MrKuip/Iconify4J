@@ -135,9 +135,9 @@ public class IconViewer
       m_selectedIconSetData = newValue;
       m_iconList.setAll(m_iconListByIdMap.getOrDefault(m_selectedIconSetData.getId(), Collections.emptyList()));
     });
-    comboBox.getSelectionModel().select(IconSetData.getIconSetDataByIdMap().get(IconSetData.ALL));
+    comboBox.getSelectionModel().select(IconSetData.getIconSetDataByIdMap().get(IconSetData.ALL).getIconSetData());
 
-    menuButton = new Button(null, new FxIcon("mdi-menu").size(IconSize.SMALL).getNode());
+    menuButton = new Button(null, new FxIcon("mdi-menu").size(IconSize.REGULAR).getNode());
 
     // HBox.setHgrow(label, Priority.NEVER);
     HBox.setHgrow(filterField, Priority.ALWAYS);
