@@ -2,7 +2,7 @@ package org.kku.iconify.main;
 
 import java.awt.Desktop;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.kku.iconify.data.IconSetData;
 import org.kku.iconify.data.IconSetData.IconData;
-import org.kku.iconify.data.IconSetData.IconData.Alias;
 import org.kku.iconify.data.IconSetData.IconData.Category;
 import org.kku.iconify.main.view.SVGEditor;
 import org.kku.iconify.scene.control.TabPaneNode;
@@ -72,7 +71,7 @@ public class IconViewer
     pane.add(getFilterPane(), "cell 0 0 2 1, grow");
     pane.add(m_iconTableView, "cell 0 1 1 3, grow");
     pane.add(getButtonPane(), "cell 1 1, grow");
-    pane.add(getFontInfoNode(), "cell 1 2, width 30%, grow");
+    pane.add(getIconSetInfoNode(), "cell 1 2, width 30%, grow");
     pane.add(m_iconView, "cell 1 3, grow, width pref");
 
     m_iconView.getSelectionModel().select(0);
@@ -80,7 +79,7 @@ public class IconViewer
     m_tabbedPaneNode = new TabPaneNode(pane);
 
     Scene scene = new Scene(m_tabbedPaneNode, 1200, 600, false, SceneAntialiasing.DISABLED);
-    stage.setTitle("Font icons");
+    stage.setTitle("Iconify icons");
     stage.setScene(scene);
     stage.show();
   }
@@ -93,7 +92,7 @@ public class IconViewer
     TextField filterField;
     ComboBox<IconSetData> comboBox;
 
-    filterLabel = new FxIcon("mdi-filter").getIconNode();
+    filterLabel = new FxIcon("mdi-filter").getNode();
 
     filterField = new TextField();
     filterField.setPromptText("Filter by name...");
@@ -109,15 +108,11 @@ public class IconViewer
         {
           for (String filter : filterValues)
           {
-            if (!data.getName().toLowerCase().contains(filter))
+            if (!data.getIdLowerCase().contains(filter))
             {
               boolean found = false;
-              for (Category categorie : data.getFxIcon().getIconData().getCategoryList())
+              for (Category categorie : data.getIconData().getCategoryList())
               {
-                if (categorie.equals("Brands"))
-                {
-                  System.out.println("haha");
-                }
                 if (categorie.getCategoryLowerCase().contains(filter))
                 {
                   found = true;
@@ -142,7 +137,7 @@ public class IconViewer
     });
     comboBox.getSelectionModel().select(IconSetData.getIconSetDataByIdMap().get(IconSetData.ALL));
 
-    menuButton = new Button(null, new FxIcon("mdi-menu").size(IconSize.SMALLER).getIconNode());
+    menuButton = new Button(null, new FxIcon("mdi-menu").size(IconSize.SMALL).getNode());
 
     // HBox.setHgrow(label, Priority.NEVER);
     HBox.setHgrow(filterField, Priority.ALWAYS);
@@ -151,7 +146,7 @@ public class IconViewer
     pane = new MigPane("", "[][grow, fill][][][]", "[baseline]");
     pane.add(filterLabel, "aligny center");
     pane.add(filterField, "");
-    pane.add(new Label("Font:"));
+    pane.add(new Label("Icon set:"));
     pane.add(comboBox);
     pane.add(menuButton);
 
@@ -174,7 +169,7 @@ public class IconViewer
         {
           Node iconLabel;
 
-          iconLabel = selectedIcon.getFxIcon().size(iconSize).getIconNode();
+          iconLabel = selectedIcon.getFxIcon().size(iconSize).getNode();
           button.graphicProperty().set(iconLabel);
         }
       });
@@ -185,14 +180,13 @@ public class IconViewer
     return pane;
   }
 
-  private Node getFontInfoNode()
+  private Node getIconSetInfoNode()
   {
     MigPane pane;
     Label glyphNameText;
     Button editSVGButton;
     Label versionText;
     Label authorText;
-    Label licenseNameText;
     Hyperlink licenseURLHyperlink;
     Hyperlink projectURLHyperlink;
     Label numberOfIconsText;
@@ -225,10 +219,6 @@ public class IconViewer
     pane.add(new Label("Website"));
     pane.add(projectURLHyperlink);
 
-    licenseNameText = new Label();
-    pane.add(new Label("License name"));
-    pane.add(licenseNameText);
-
     licenseURLHyperlink = new Hyperlink();
     licenseURLHyperlink.setFocusTraversable(false);
     pane.add(new Label("License url"));
@@ -240,39 +230,44 @@ public class IconViewer
 
     m_iconView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
       FxIcon fxIcon;
-      IconData iconGlyphData;
-      IconSetData iconFontData;
+      IconData iconData;
+      IconSetData iconSetData;
 
       fxIcon = newValue == null ? null : newValue.getFxIcon();
-      iconGlyphData = newValue == null ? null : newValue.getIconData();
-      iconFontData = iconGlyphData == null ? null : iconGlyphData.getIconSetData();
+      iconData = newValue == null ? null : newValue.getIconData();
+      iconSetData = iconData == null ? null : iconData.getIconSetData();
 
-      glyphNameText.setText(iconFontData != null ? newValue.getName() : "");
-      prefixText.setText(iconFontData != null ? newValue.getPrefix() : "");
+      glyphNameText.setText(iconSetData != null ? newValue.getName() : "");
+      prefixText.setText(iconSetData != null ? newValue.getPrefix() : "");
       editSVGButton.onActionProperty().set((a) -> {
         SVGEditor svgEditor;
         svgEditor = new SVGEditor(fxIcon);
-        m_tabbedPaneNode.addTab(iconGlyphData.getId(), svgEditor.getEditor(), true);
+        m_tabbedPaneNode.addTab(iconData.getId(), svgEditor.getEditor(), true);
       });
-      versionText.setText(iconFontData != null ? iconFontData.getVersion() : "");
-      authorText.setText(iconFontData != null ? iconFontData.getAuthor() : "");
-      projectURLHyperlink.setText(iconFontData != null ? iconFontData.getProjectURL() : "");
+      versionText.setText(iconSetData != null ? iconSetData.getVersion() : "");
+      authorText.setText(iconSetData != null ? iconSetData.getAuthor() : "");
+      projectURLHyperlink.setText(iconSetData != null ? iconSetData.getProjectURL() : "");
       projectURLHyperlink.setOnAction((ae) -> { browse(projectURLHyperlink.getText()); });
-      licenseNameText.setText(iconFontData != null ? iconFontData.getLicenseName() : "");
-      licenseURLHyperlink.setText(iconFontData != null ? iconFontData.getLicenseURL() : "");
-      licenseURLHyperlink.setOnAction((ae) -> { browse(licenseURLHyperlink.getText()); });
-      numberOfIconsText.setText(iconFontData != null ? "" + iconFontData.getNumberOfIcons() : "");
+      licenseURLHyperlink.setText(iconSetData != null ? iconSetData.getLicenseName() : "");
+      licenseURLHyperlink.setOnAction((ae) -> { browse(iconSetData.getLicenseURL()); });
+      numberOfIconsText.setText(iconSetData != null ? "" + iconSetData.getNumberOfIcons() : "");
     });
 
     return pane;
   }
 
+  /**
+   * Launches default browser to display a uri.
+   * 
+   * @param url
+   */
   private void browse(String url)
   {
+    // This MUST happen in a separate Thread otherwise the JavaFX Thread will be blocked.
     new Thread(() -> {
       try
       {
-        Desktop.getDesktop().browse(new URL(url).toURI());
+        Desktop.getDesktop().browse(new URI(url));
       }
       catch (Exception e)
       {
@@ -369,7 +364,7 @@ public class IconViewer
     });
     tableView.setMaxWidth(Double.MAX_VALUE);
     nameColumn = new TableColumn<>("Name");
-    nameColumn.setCellValueFactory(cb -> new SimpleStringProperty(cb.getValue().getName()));
+    nameColumn.setCellValueFactory(cb -> new SimpleStringProperty(cb.getValue().getId()));
     tableView.getColumns().add(nameColumn);
     iconLabelColumn = new TableColumn<>("Icon");
     iconLabelColumn.setCellValueFactory(cb -> new SimpleObjectProperty<>(cb.getValue().getIconLabel()));
@@ -450,18 +445,18 @@ public class IconViewer
         .collect(Collectors.toMap(iconSet -> iconSet.getId(), this::getIconList));
   }
 
-  private List<Icon> getIconList(IconSetData iconFontData)
+  private List<Icon> getIconList(IconSetData iconSetData)
   {
     List<Icon> list;
 
-    if (iconFontData.isAll())
+    if (iconSetData.isAll())
     {
       list = IconSetData.getIconSetDataCollection().stream().filter(f -> !f.isAll()).map(this::getIconList)
           .flatMap(List::stream).sorted().collect(Collectors.toList());
     }
     else
     {
-      list = iconFontData.getIconDataList().stream().sorted().map(id -> new Icon(id)).collect(Collectors.toList());
+      list = iconSetData.getIconDataList().stream().sorted().map(id -> new Icon(id)).collect(Collectors.toList());
     }
 
     return list;
@@ -485,28 +480,30 @@ public class IconViewer
   class Icon
       implements Comparable<Icon>
   {
+    private final IconData mi_iconData;
+    private final String mi_idLowerCase;
     private final FxIcon mi_fxIcon;
-    private final String mi_name;
 
     Icon(IconData iconData)
     {
-      this(iconData.getName(), iconData);
+      mi_iconData = iconData;
+      mi_idLowerCase = getId().toLowerCase();
+      mi_fxIcon = new FxIcon(iconData).size(IconSize.HUGE);
     }
 
-    Icon(Alias alias, IconData iconData)
+    public IconData getIconData()
     {
-      this(alias.getAlias(), iconData);
+      return mi_iconData;
     }
 
-    private Icon(String name, IconData iconData)
+    public String getId()
     {
-      mi_name = name;
-      mi_fxIcon = new FxIcon(iconData).size(IconSize.SUPER_LARGE);
+      return mi_iconData.getId();
     }
 
-    public Icon(Icon icon)
+    public String getName()
     {
-      this(icon.getIconData());
+      return mi_iconData.getName();
     }
 
     public FxIcon getFxIcon()
@@ -514,35 +511,30 @@ public class IconViewer
       return mi_fxIcon;
     }
 
-    public IconData getIconData()
-    {
-      return mi_fxIcon.getIconData();
-    }
-
     public String getIconSetName()
     {
-      return getIconData().getIconSetData().getName();
+      return mi_iconData.getIconSetData().getName();
     }
 
-    public String getName()
+    public String getIdLowerCase()
     {
-      return mi_name;
+      return mi_idLowerCase;
     }
 
     public Node getIconLabel()
     {
-      return mi_fxIcon.getIconNode();
+      return mi_fxIcon.getNode();
     }
 
     public String getPrefix()
     {
-      return mi_fxIcon.getPrefix();
+      return getIconData().getPrefix();
     }
 
     @Override
     public String toString()
     {
-      return mi_fxIcon.getId();
+      return getIconData().getId();
     }
 
     @Override

@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -26,7 +28,7 @@ public class IconSetData
   private static int ICONIFY_DEFAULT_HEIGHT = 16;
   private static int ICONIFY_DEFAULT_LEFT = 0;
   private static int ICONIFY_DEFAULT_TOP = 0;
-  private static Rotate ICONIFY_DEFAULT_ROTATE = Rotate.ROTATE_0;
+  private static Rotation ICONIFY_DEFAULT_ROTATE = Rotation.ROTATE_0;
   private static Flip ICONIFY_DEFAULT_HFLIP = Flip.FALSE;
   private static Flip ICONIFY_DEFAULT_VFLIP = Flip.FALSE;
 
@@ -42,7 +44,7 @@ public class IconSetData
   private int m_top;
   private int m_height;
   private int m_width;
-  private Rotate m_rotate;
+  private Rotation m_rotate;
   private Flip m_hFlip;
   private Flip m_vFlip;
   private String m_version = "N/A";
@@ -84,7 +86,7 @@ public class IconSetData
     }
   }
 
-  public enum Rotate
+  public enum Rotation
   {
     ROTATE_0(0),
     ROTATE_90(90),
@@ -93,7 +95,7 @@ public class IconSetData
 
     private final int mi_degrees;
 
-    private Rotate(int degrees)
+    private Rotation(int degrees)
     {
       mi_degrees = degrees;
     }
@@ -103,14 +105,14 @@ public class IconSetData
       return mi_degrees;
     }
 
-    public Rotate add(Rotate rotate)
+    public Rotation add(Rotation rotate)
     {
-      return Rotate.values()[(ordinal() + rotate.ordinal()) % Rotate.values().length];
+      return Rotation.values()[(ordinal() + rotate.ordinal()) % Rotation.values().length];
     }
 
-    public static Rotate get(int number)
+    public static Rotation get(int number)
     {
-      return Rotate.values()[number % 4];
+      return Rotation.values()[number % 4];
     }
   }
 
@@ -183,12 +185,12 @@ public class IconSetData
     return m_height;
   }
 
-  private void setRotate(Rotate rotate)
+  private void setRotate(Rotation rotate)
   {
     m_rotate = rotate;
   }
 
-  public Rotate getRotate()
+  public Rotation getRotate()
   {
     return m_rotate;
   }
@@ -343,7 +345,7 @@ public class IconSetData
     private int mi_height = -1;
     private String mi_name;
     private String mi_svgText;
-    private Rotate mi_rotate;
+    private Rotation mi_rotate;
     private Flip mi_hFlip;
     private Flip mi_vFlip;
     private List<Alias> mi_aliasList;
@@ -424,12 +426,12 @@ public class IconSetData
       return mi_height;
     }
 
-    private void setRotate(Rotate rotateDegrees)
+    private void setRotate(Rotation rotateDegrees)
     {
       mi_rotate = rotateDegrees;
     }
 
-    public Rotate getRotate()
+    public Rotation getRotate()
     {
       return mi_rotate;
     }
@@ -582,14 +584,14 @@ public class IconSetData
   {
     if (m_iconSetDataByIdMap == null)
     {
-      IconSetData allFontData;
+      IconSetData allIconSetData;
 
       m_iconSetDataByIdMap = new LinkedHashMap<>();
 
-      allFontData = new IconSetData();
-      allFontData.setId(ALL);
-      allFontData.setName("All");
-      m_iconSetDataByIdMap.put(allFontData.getId(), allFontData);
+      allIconSetData = new IconSetData();
+      allIconSetData.setId(ALL);
+      allIconSetData.setName("All");
+      m_iconSetDataByIdMap.put(allIconSetData.getId(), allIconSetData);
 
       for (String name : parseIconifyIconSets())
       {
@@ -652,7 +654,7 @@ public class IconSetData
       iconSetData.setTop(rootNode.path("top").asInt(ICONIFY_DEFAULT_TOP));
       iconSetData.setWidth(rootNode.path("width").asInt(ICONIFY_DEFAULT_WIDTH));
       iconSetData.setHeight(rootNode.path("height").asInt(ICONIFY_DEFAULT_HEIGHT));
-      iconSetData.setRotate(Rotate.get(rootNode.path("rotate").asInt(ICONIFY_DEFAULT_ROTATE.get())));
+      iconSetData.setRotate(Rotation.get(rootNode.path("rotate").asInt(ICONIFY_DEFAULT_ROTATE.get())));
       iconSetData.setHFlip(Flip.get(rootNode.path("hFlip").asBoolean(ICONIFY_DEFAULT_HFLIP.get())));
       iconSetData.setVFlip(Flip.get(rootNode.path("vFlip").asBoolean(ICONIFY_DEFAULT_VFLIP.get())));
 
@@ -685,11 +687,11 @@ public class IconSetData
         iconData.setWidth(iconNode.path("width").asInt(iconSetData.getWidth()));
         iconData.setHeight(iconNode.path("height").asInt(iconSetData.getHeight()));
         iconData.setRotate(
-            iconSetData.getRotate().add(Rotate.get(rootNode.path("rotate").asInt(ICONIFY_DEFAULT_ROTATE.get()))));
+            iconSetData.getRotate().add(Rotation.get(iconNode.path("rotate").asInt(ICONIFY_DEFAULT_ROTATE.get()))));
         iconData.setHFlip(
-            iconSetData.getHFlip().add(Flip.get(rootNode.path("hFlip").asBoolean(ICONIFY_DEFAULT_HFLIP.get()))));
+            iconSetData.getHFlip().add(Flip.get(iconNode.path("hFlip").asBoolean(ICONIFY_DEFAULT_HFLIP.get()))));
         iconData.setVFlip(
-            iconSetData.getVFlip().add(Flip.get(rootNode.path("vFlip").asBoolean(ICONIFY_DEFAULT_VFLIP.get()))));
+            iconSetData.getVFlip().add(Flip.get(iconNode.path("vFlip").asBoolean(ICONIFY_DEFAULT_VFLIP.get()))));
 
         iconMap.put(iconData.getName(), iconData);
       });
@@ -717,8 +719,8 @@ public class IconSetData
           aliasIconData.setWidth(aliasNode.path("width").asInt(parentIconData.getWidth()));
           aliasIconData.setHeight(aliasNode.path("height").asInt(parentIconData.getHeight()));
           aliasIconData.setSVGText(parentIconData.getSVGText());
-          aliasIconData.setRotate(
-              Rotate.get(aliasNode.path("rotate").asInt(ICONIFY_DEFAULT_ROTATE.get())).add(parentIconData.getRotate()));
+          aliasIconData.setRotate(Rotation.get(aliasNode.path("rotate").asInt(ICONIFY_DEFAULT_ROTATE.get()))
+              .add(parentIconData.getRotate()));
           aliasIconData.setHFlip(
               Flip.get(aliasNode.path("hFlip").asBoolean(ICONIFY_DEFAULT_HFLIP.get())).add(parentIconData.getHFlip()));
           aliasIconData.setVFlip(
@@ -755,15 +757,13 @@ public class IconSetData
 
   public static IconData searchIconData(String iconId)
   {
-    for (IconSetData iconSet : getIconSetDataCollection())
-    {
-      IconData iconData;
+    Optional<IconData> iconData;
 
-      iconData = iconSet.getIconDataByIdMap().get(iconId);
-      if (iconData != null)
-      {
-        return iconData;
-      }
+    iconData = getIconSetDataCollection().stream().map(iconSet -> iconSet.getIconDataByIdMap().get(iconId))
+        .filter(Objects::nonNull).findFirst();
+    if (iconData.isPresent())
+    {
+      return iconData.get();
     }
 
     return null;

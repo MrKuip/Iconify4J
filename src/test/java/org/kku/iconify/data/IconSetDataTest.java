@@ -2,7 +2,7 @@ package org.kku.iconify.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import org.kku.iconify.data.IconSetData.Rotate;
+import org.kku.iconify.data.IconSetData.Rotation;
 import org.kku.iconify.data.IconSetData.Flip;
 
 class IconSetDataTest
@@ -10,40 +10,40 @@ class IconSetDataTest
   @Test
   public void testRotate()
   {
-    assertEquals(Rotate.ROTATE_0.get(), 0);
-    assertEquals(Rotate.ROTATE_90.get(), 90);
-    assertEquals(Rotate.ROTATE_180.get(), 180);
-    assertEquals(Rotate.ROTATE_270.get(), 270);
+    assertEquals(Rotation.ROTATE_0.get(), 0);
+    assertEquals(Rotation.ROTATE_90.get(), 90);
+    assertEquals(Rotation.ROTATE_180.get(), 180);
+    assertEquals(Rotation.ROTATE_270.get(), 270);
     
-    assertEquals(Rotate.ROTATE_0, Rotate.get(0));
-    assertEquals(Rotate.ROTATE_90, Rotate.get(1));
-    assertEquals(Rotate.ROTATE_180, Rotate.get(2));
-    assertEquals(Rotate.ROTATE_270, Rotate.get(3));
-    assertEquals(Rotate.ROTATE_0, Rotate.get(4));
-    assertEquals(Rotate.ROTATE_90, Rotate.get(5));
-    assertEquals(Rotate.ROTATE_180, Rotate.get(6));
-    assertEquals(Rotate.ROTATE_270, Rotate.get(7));
-    assertEquals(Rotate.ROTATE_0, Rotate.get(8));
+    assertEquals(Rotation.ROTATE_0, Rotation.get(0));
+    assertEquals(Rotation.ROTATE_90, Rotation.get(1));
+    assertEquals(Rotation.ROTATE_180, Rotation.get(2));
+    assertEquals(Rotation.ROTATE_270, Rotation.get(3));
+    assertEquals(Rotation.ROTATE_0, Rotation.get(4));
+    assertEquals(Rotation.ROTATE_90, Rotation.get(5));
+    assertEquals(Rotation.ROTATE_180, Rotation.get(6));
+    assertEquals(Rotation.ROTATE_270, Rotation.get(7));
+    assertEquals(Rotation.ROTATE_0, Rotation.get(8));
     
-    assertEquals(Rotate.ROTATE_0.add(Rotate.ROTATE_0), Rotate.ROTATE_0);
-    assertEquals(Rotate.ROTATE_0.add(Rotate.ROTATE_90), Rotate.ROTATE_90);
-    assertEquals(Rotate.ROTATE_0.add(Rotate.ROTATE_180), Rotate.ROTATE_180);
-    assertEquals(Rotate.ROTATE_0.add(Rotate.ROTATE_270), Rotate.ROTATE_270);
+    assertEquals(Rotation.ROTATE_0.add(Rotation.ROTATE_0), Rotation.ROTATE_0);
+    assertEquals(Rotation.ROTATE_0.add(Rotation.ROTATE_90), Rotation.ROTATE_90);
+    assertEquals(Rotation.ROTATE_0.add(Rotation.ROTATE_180), Rotation.ROTATE_180);
+    assertEquals(Rotation.ROTATE_0.add(Rotation.ROTATE_270), Rotation.ROTATE_270);
     
-    assertEquals(Rotate.ROTATE_90.add(Rotate.ROTATE_0), Rotate.ROTATE_90);
-    assertEquals(Rotate.ROTATE_90.add(Rotate.ROTATE_90), Rotate.ROTATE_180);
-    assertEquals(Rotate.ROTATE_90.add(Rotate.ROTATE_180), Rotate.ROTATE_270);
-    assertEquals(Rotate.ROTATE_90.add(Rotate.ROTATE_270), Rotate.ROTATE_0);
+    assertEquals(Rotation.ROTATE_90.add(Rotation.ROTATE_0), Rotation.ROTATE_90);
+    assertEquals(Rotation.ROTATE_90.add(Rotation.ROTATE_90), Rotation.ROTATE_180);
+    assertEquals(Rotation.ROTATE_90.add(Rotation.ROTATE_180), Rotation.ROTATE_270);
+    assertEquals(Rotation.ROTATE_90.add(Rotation.ROTATE_270), Rotation.ROTATE_0);
     
-    assertEquals(Rotate.ROTATE_180.add(Rotate.ROTATE_0), Rotate.ROTATE_180);
-    assertEquals(Rotate.ROTATE_180.add(Rotate.ROTATE_90), Rotate.ROTATE_270);
-    assertEquals(Rotate.ROTATE_180.add(Rotate.ROTATE_180), Rotate.ROTATE_0);
-    assertEquals(Rotate.ROTATE_180.add(Rotate.ROTATE_270), Rotate.ROTATE_90);
+    assertEquals(Rotation.ROTATE_180.add(Rotation.ROTATE_0), Rotation.ROTATE_180);
+    assertEquals(Rotation.ROTATE_180.add(Rotation.ROTATE_90), Rotation.ROTATE_270);
+    assertEquals(Rotation.ROTATE_180.add(Rotation.ROTATE_180), Rotation.ROTATE_0);
+    assertEquals(Rotation.ROTATE_180.add(Rotation.ROTATE_270), Rotation.ROTATE_90);
     
-    assertEquals(Rotate.ROTATE_270.add(Rotate.ROTATE_0), Rotate.ROTATE_270);
-    assertEquals(Rotate.ROTATE_270.add(Rotate.ROTATE_90), Rotate.ROTATE_0);
-    assertEquals(Rotate.ROTATE_270.add(Rotate.ROTATE_180), Rotate.ROTATE_90);
-    assertEquals(Rotate.ROTATE_270.add(Rotate.ROTATE_270), Rotate.ROTATE_180);
+    assertEquals(Rotation.ROTATE_270.add(Rotation.ROTATE_0), Rotation.ROTATE_270);
+    assertEquals(Rotation.ROTATE_270.add(Rotation.ROTATE_90), Rotation.ROTATE_0);
+    assertEquals(Rotation.ROTATE_270.add(Rotation.ROTATE_180), Rotation.ROTATE_90);
+    assertEquals(Rotation.ROTATE_270.add(Rotation.ROTATE_270), Rotation.ROTATE_180);
   }
   
   @Test

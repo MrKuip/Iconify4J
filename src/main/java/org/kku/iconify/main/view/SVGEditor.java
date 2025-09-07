@@ -7,7 +7,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import org.kku.iconify.javax.scene.SVGNode;
 import org.kku.iconify.ui.FxIcon;
 import org.tbee.javafx.scene.layout.MigPane;
 import javafx.scene.Node;
@@ -17,20 +16,22 @@ import javafx.scene.layout.VBox;
 
 public class SVGEditor
 {
-  static final private int MAX_PIXEL_SIZE = 640;
-  private Node mi_editor;
+  static final private int ICON_SIZE = 640;
+  private FxIcon m_icon;
+  private Node m_editor;
 
   public SVGEditor(FxIcon fxIcon)
   {
-    mi_editor = createEditor(fxIcon);
+    m_icon = new FxIcon(fxIcon).size(ICON_SIZE);
+    m_editor = createEditor();
   }
 
   public Node getEditor()
   {
-    return mi_editor;
+    return m_editor;
   }
 
-  private Node createEditor(FxIcon fxIcon)
+  private Node createEditor()
   {
     MigPane pane;
     Button runButton;
@@ -40,7 +41,7 @@ public class SVGEditor
 
     svgImageBox = new VBox();
 
-    svgText = getPrettyPrint(fxIcon.getParsedSVGText());
+    svgText = getPrettyPrint(m_icon.getParsedSVGText());
 
     svgTextArea = new TextArea();
     svgTextArea.setStyle("-fx-font-family: monospace;");
@@ -48,10 +49,11 @@ public class SVGEditor
 
     runButton = new Button("Run");
     runButton.setOnAction((a) -> {
-      svgImageBox.getChildren().setAll(getSVGImage(svgTextArea.getText()));
+      m_icon.setParsedSVG(svgTextArea.getText());
+      svgImageBox.getChildren().setAll(m_icon.getNode());
     });
 
-    svgImageBox.getChildren().add(getSVGImage(svgText));
+    svgImageBox.getChildren().add(m_icon.getNode());
 
     pane = new MigPane("", "[grow][pref]", "[][grow]");
     pane.add(runButton, "span, wrap");
@@ -59,11 +61,6 @@ public class SVGEditor
     pane.add(svgImageBox, "");
 
     return pane;
-  }
-
-  private Node getSVGImage(String svgText)
-  {
-    return new SVGNode(svgText, MAX_PIXEL_SIZE, MAX_PIXEL_SIZE);
   }
 
   private String getPrettyPrint(String xmlText)

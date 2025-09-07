@@ -9,7 +9,6 @@ module org.kku.iconify
   requires com.github.weisj.jsvg.javafx;
   requires com.github.weisj.jsvg;
   requires com.fasterxml.jackson.databind;
-  
+
   exports org.kku.iconify.ui;
-  exports org.kku.iconify.main;
 }
