@@ -49,20 +49,22 @@ public class FxIcon
 
   public FxIcon size(IconSize size)
   {
-    setSize(size);
-    return this;
+    return size(size.getSize());
   }
 
   public FxIcon size(double size)
   {
-    setSize(size);
-    return this;
+    return size(new Dimension2D(size, size));
   }
 
   public FxIcon size(Dimension2D size)
   {
-    setSize(size);
-    return this;
+    FxIcon copy;
+
+    copy = new FxIcon(this);
+    copy.setSize(size);
+
+    return copy;
   }
 
   public void setSize(IconSize size)
@@ -87,14 +89,17 @@ public class FxIcon
 
   public FxIcon color(IconColor color)
   {
-    setColor(color);
-    return this;
+    return color(color.getColor());
   }
 
   public FxIcon color(Color color)
   {
-    setColor(color);
-    return this;
+    FxIcon copy;
+
+    copy = new FxIcon(this);
+    copy.setColor(color);
+
+    return copy;
   }
 
   public void setColor(IconColor color)
@@ -115,7 +120,10 @@ public class FxIcon
   public void addBadge(IconAlignment alignment, FxIcon icon, double scale)
   {
     icon = new FxIcon(icon);
-    icon.size(new Dimension2D((getSize().getWidth() * scale), getSize().getHeight() * scale));
+    if (scale > 0.0)
+    {
+      icon.size(new Dimension2D((getSize().getWidth() * scale), getSize().getHeight() * scale));
+    }
 
     if (m_badgeList == null)
     {
@@ -126,7 +134,7 @@ public class FxIcon
 
   public void addBadge(IconAlignment alignment, FxIcon fxIcon)
   {
-    addBadge(alignment, fxIcon, 1.0);
+    addBadge(alignment, fxIcon, 0.0);
   }
 
   public void setParsedSVG(String parsedSVG)
@@ -259,6 +267,9 @@ public class FxIcon
               badgeScaleX = badge.getFxIcon().getSize().getWidth() / getWidth();
               badgeScaleY = badge.getFxIcon().getSize().getHeight() / getHeight();
               badgeScale = Math.min(badgeScaleX, badgeScaleY);
+              System.out.println("getWidth()=" + getWidth());
+              System.out.println("badge.width=" + badge.getFxIcon().getSize().getHeight());
+              System.out.println("badgeScale=" + badgeScale);
 
               switch (badge.mi_alignment)
               {
