@@ -82,7 +82,6 @@ public class IconSets
     reader = new ObjectMapper().reader().at("/icon-sets");
     result = new ArrayList<>();
 
-    System.out.println("parseIconify: " + url);
     try (InputStream is = IconSetData.class.getResourceAsStream(url))
     {
       JsonNode iconSetsNode;
@@ -120,7 +119,6 @@ public class IconSets
     url = "/module-resources/iconify/" + name + ".json";
     reader = new ObjectMapper().reader();
 
-    System.out.println("parseIconify: " + url);
     try (InputStream is = IconSetData.class.getResourceAsStream(url))
     {
       JsonNode rootNode;
