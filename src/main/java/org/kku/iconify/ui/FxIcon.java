@@ -3,10 +3,10 @@ package org.kku.iconify.ui;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.kku.iconify.data.IconSetData;
 import org.kku.iconify.data.IconSetData.Flip;
 import org.kku.iconify.data.IconSetData.IconData;
 import org.kku.iconify.data.IconSetData.Rotation;
+import org.kku.iconify.data.IconSets;
 import org.kku.iconify.util.ColorUtil;
 import org.kku.iconify.util.SVGUtil;
 import com.github.weisj.jsvg.SVGDocument;
@@ -30,7 +30,7 @@ public class FxIcon
 
   public FxIcon(String iconId)
   {
-    this(IconSetData.searchIconData(iconId));
+    this(IconSets.get().searchIconData(iconId));
   }
 
   public FxIcon(IconData iconData)
@@ -115,7 +115,7 @@ public class FxIcon
   public void addBadge(IconAlignment alignment, FxIcon icon, double scale)
   {
     icon = new FxIcon(icon);
-    if(scale > 0.0)
+    if (scale > 0.0)
     {
       icon.size(new Dimension2D((getSize().getWidth() * scale), getSize().getHeight() * scale));
     }

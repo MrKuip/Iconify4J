@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.kku.iconify.data.IconSetData;
 import org.kku.iconify.data.IconSetData.IconData;
 import org.kku.iconify.data.IconSetData.IconData.Category;
+import org.kku.iconify.data.IconSets;
 import org.kku.iconify.main.view.SVGEditor;
 import org.kku.iconify.scene.control.TabPaneNode;
 import org.kku.iconify.ui.FxIcon;
@@ -130,12 +131,12 @@ public class IconViewer
 
     comboBox = new ComboBox<>();
     comboBox.setConverter(null);
-    comboBox.getItems().addAll(IconSetData.getIconSetDataCollection().stream().collect(Collectors.toList()));
+    comboBox.getItems().addAll(IconSets.get().getIconSetDataCollection().stream().collect(Collectors.toList()));
     comboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
       m_selectedIconSetData = newValue;
       m_iconList.setAll(m_iconListByIdMap.getOrDefault(m_selectedIconSetData.getId(), Collections.emptyList()));
     });
-    comboBox.getSelectionModel().select(IconSetData.getIconSetDataByIdMap().get(IconSetData.ALL).getIconSetData());
+    comboBox.getSelectionModel().select(IconSets.get().getIconSetDataByIdMap().get(IconSets.ALL).getIconSetData());
 
     menuButton = new Button(null, new FxIcon("mdi-menu").size(IconSize.REGULAR).getNode());
 
@@ -441,7 +442,7 @@ public class IconViewer
 
   private Map<String, List<Icon>> getIconMap()
   {
-    return IconSetData.getIconSetDataCollection().stream()
+    return IconSets.get().getIconSetDataCollection().stream()
         .collect(Collectors.toMap(iconSet -> iconSet.getId(), this::getIconList));
   }
 
@@ -451,7 +452,7 @@ public class IconViewer
 
     if (iconSetData.isAll())
     {
-      list = IconSetData.getIconSetDataCollection().stream().filter(f -> !f.isAll()).map(this::getIconList)
+      list = IconSets.get().getIconSetDataCollection().stream().filter(f -> !f.isAll()).map(this::getIconList)
           .flatMap(List::stream).sorted().collect(Collectors.toList());
     }
     else

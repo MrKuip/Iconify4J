@@ -1,40 +1,16 @@
 package org.kku.iconify.data;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 
 public class IconSetData
     implements Comparable<IconSetData>
 {
-  private static int ICONIFY_DEFAULT_WIDTH = 16;
-  private static int ICONIFY_DEFAULT_HEIGHT = 16;
-  private static int ICONIFY_DEFAULT_LEFT = 0;
-  private static int ICONIFY_DEFAULT_TOP = 0;
-  private static Rotation ICONIFY_DEFAULT_ROTATE = Rotation.ROTATE_0;
-  private static Flip ICONIFY_DEFAULT_HFLIP = Flip.FALSE;
-  private static Flip ICONIFY_DEFAULT_VFLIP = Flip.FALSE;
-
-  private static Map<String, IconSetDataHolder> m_iconSetDataByIdMap;
-  private static List<IconSetData> m_iconSetDataList;
-  private static Set<String> m_allCategoryList = new HashSet<>();
-  public static final String ALL = "ALL";
-
   private String m_id;
   private String m_prefix;
   private int m_numberOfIcons;
@@ -114,13 +90,13 @@ public class IconSetData
     }
   }
 
-  private IconSetData()
+  IconSetData()
   {
   }
 
   public boolean isAll()
   {
-    return ALL.equals(getId());
+    return IconSets.ALL.equals(getId());
   }
 
   public void setId(String id)
@@ -143,7 +119,7 @@ public class IconSetData
     return m_prefix;
   }
 
-  private void setLeft(int left)
+  void setLeft(int left)
   {
     m_left = left;
   }
@@ -153,7 +129,7 @@ public class IconSetData
     return m_left;
   }
 
-  private void setTop(int top)
+  void setTop(int top)
   {
     m_top = top;
   }
@@ -163,7 +139,7 @@ public class IconSetData
     return m_top;
   }
 
-  public void setWidth(int width)
+  void setWidth(int width)
   {
     m_width = width;
   }
@@ -173,7 +149,7 @@ public class IconSetData
     return m_width;
   }
 
-  public void setHeight(int height)
+  void setHeight(int height)
   {
     m_height = height;
   }
@@ -183,7 +159,7 @@ public class IconSetData
     return m_height;
   }
 
-  private void setRotate(Rotation rotate)
+  void setRotate(Rotation rotate)
   {
     m_rotate = rotate;
   }
@@ -193,7 +169,7 @@ public class IconSetData
     return m_rotate;
   }
 
-  private void setHFlip(Flip hFlip)
+  void setHFlip(Flip hFlip)
   {
     m_hFlip = hFlip;
   }
@@ -203,7 +179,7 @@ public class IconSetData
     return m_hFlip;
   }
 
-  private void setVFlip(Flip vFlip)
+  void setVFlip(Flip vFlip)
   {
     m_vFlip = vFlip;
   }
@@ -213,7 +189,7 @@ public class IconSetData
     return m_vFlip;
   }
 
-  private void setNumberOfIcons(int numberOfIcons)
+  void setNumberOfIcons(int numberOfIcons)
   {
     m_numberOfIcons = numberOfIcons;
   }
@@ -223,7 +199,7 @@ public class IconSetData
     return m_numberOfIcons;
   }
 
-  private void setVersion(String version)
+  void setVersion(String version)
   {
     m_version = version;
   }
@@ -233,7 +209,7 @@ public class IconSetData
     return m_version;
   }
 
-  private void setName(String name)
+  void setName(String name)
   {
     m_name = name;
   }
@@ -243,7 +219,7 @@ public class IconSetData
     return m_name;
   }
 
-  private void setLicenseURL(String licenseURL)
+  void setLicenseURL(String licenseURL)
   {
     m_licenseURL = licenseURL;
   }
@@ -253,7 +229,7 @@ public class IconSetData
     return m_licenseURL;
   }
 
-  private void setLicenseName(String licenseName)
+  void setLicenseName(String licenseName)
   {
     m_licenseName = licenseName;
   }
@@ -263,7 +239,7 @@ public class IconSetData
     return m_licenseName;
   }
 
-  private void setCategory(String category)
+  void setCategory(String category)
   {
     m_category = category;
   }
@@ -273,7 +249,7 @@ public class IconSetData
     return m_category;
   }
 
-  private void setAuthor(String author)
+  void setAuthor(String author)
   {
     m_author = author;
   }
@@ -283,7 +259,7 @@ public class IconSetData
     return m_author;
   }
 
-  private void setProjectURL(String projectURL)
+  void setProjectURL(String projectURL)
   {
     m_projectURL = projectURL;
   }
@@ -293,7 +269,7 @@ public class IconSetData
     return m_projectURL;
   }
 
-  private IconData addIcon()
+  IconData addIcon()
   {
     IconData iconData;
 
@@ -332,38 +308,38 @@ public class IconSetData
   {
     return getName().compareTo(ifd.getName());
   }
-  
+
   public static class IconSetDataHolder
   {
     private final String mi_id;
     private final String mi_prefix;
     private Supplier<IconSetData> mi_iconSetDataSupplier;
     private IconSetData mi_iconSetData;
-    
+
     public IconSetDataHolder(String id, String prefix, Supplier<IconSetData> iconSetDataSupplier)
     {
       mi_id = id;
       mi_prefix = prefix;
       mi_iconSetDataSupplier = iconSetDataSupplier;
     }
-    
+
     public String getId()
     {
       return mi_id;
     }
-    
+
     public String getPrefix()
     {
       return mi_prefix;
     }
-    
+
     public IconSetData getIconSetData()
     {
-      if(mi_iconSetData == null )
+      if (mi_iconSetData == null)
       {
         mi_iconSetData = mi_iconSetDataSupplier.get();
       }
-      
+
       return mi_iconSetData;
     }
   }
@@ -413,13 +389,13 @@ public class IconSetData
       return mi_name;
     }
 
-    private void setName(String name)
+    void setName(String name)
     {
       mi_name = name;
       mi_id = null;
     }
 
-    private void setLeft(int left)
+    void setLeft(int left)
     {
       mi_left = left;
     }
@@ -429,7 +405,7 @@ public class IconSetData
       return mi_left;
     }
 
-    private void setTop(int top)
+    void setTop(int top)
     {
       mi_top = top;
     }
@@ -439,7 +415,7 @@ public class IconSetData
       return mi_top;
     }
 
-    private void setWidth(int width)
+    void setWidth(int width)
     {
       mi_width = width;
     }
@@ -449,7 +425,7 @@ public class IconSetData
       return mi_width;
     }
 
-    private void setHeight(int height)
+    void setHeight(int height)
     {
       mi_height = height;
     }
@@ -459,7 +435,7 @@ public class IconSetData
       return mi_height;
     }
 
-    private void setRotate(Rotation rotateDegrees)
+    void setRotate(Rotation rotateDegrees)
     {
       mi_rotate = rotateDegrees;
     }
@@ -469,7 +445,7 @@ public class IconSetData
       return mi_rotate;
     }
 
-    private void setHFlip(Flip hFlip)
+    void setHFlip(Flip hFlip)
     {
       mi_hFlip = hFlip;
     }
@@ -479,7 +455,7 @@ public class IconSetData
       return mi_hFlip;
     }
 
-    private void setVFlip(Flip vFlip)
+    void setVFlip(Flip vFlip)
     {
       mi_vFlip = vFlip;
     }
@@ -489,7 +465,7 @@ public class IconSetData
       return mi_vFlip;
     }
 
-    private Alias addAlias(String aliasName)
+    Alias addAlias(String aliasName)
     {
       Alias alias;
 
@@ -508,7 +484,7 @@ public class IconSetData
       return mi_aliasList == null ? Collections.emptyList() : mi_aliasList;
     }
 
-    private Category addCategory(String text)
+    Category addCategory(String text)
     {
       Category category;
 
@@ -565,7 +541,7 @@ public class IconSetData
       }
     }
 
-    private void setSVGText(String svg)
+    void setSVGText(String svg)
     {
       mi_svgText = svg;
     }
@@ -601,214 +577,6 @@ public class IconSetData
     {
       return "Icon[" + getId() + "]";
     }
-  }
-
-  public static synchronized Collection<IconSetData> getIconSetDataCollection()
-  {
-    if (m_iconSetDataList == null)
-    {
-      m_iconSetDataList = getIconSetDataByIdMap().values().stream().map(IconSetDataHolder::getIconSetData).collect(Collectors.toList());
-    }
-
-    return m_iconSetDataList;
-  }
-
-  public static synchronized Map<String, IconSetDataHolder> getIconSetDataByIdMap()
-  {
-    if (m_iconSetDataByIdMap == null)
-    {
-      m_iconSetDataByIdMap = new LinkedHashMap<>();
-      m_iconSetDataByIdMap.put(ALL, new IconSetDataHolder(ALL, "all",  () -> generateAll()));
-
-      for (String id : parseIconifyIconSets())
-      {
-        m_iconSetDataByIdMap.put(id, new IconSetDataHolder(id, id, () -> parseIconify(id)));
-      }
-    }
-    return m_iconSetDataByIdMap;
-  }
-  
-  private static List<String> parseIconifyIconSets()
-  {
-    ObjectReader reader;
-    String url;
-    List<String> result;
-    
-    url = "/module-resources/iconify/IconifyIconSets.json";
-    reader = new ObjectMapper().reader();
-    result = new ArrayList<>();
-    
-    System.out.println("parseIconify: " + url);
-    try (InputStream is = IconSetData.class.getResourceAsStream(url))
-    {
-      JsonNode rootNode;
-
-      rootNode = reader.readTree(IconSetData.class.getResourceAsStream(url));
-      rootNode.path("icon-sets").forEach(idNode -> {
-        result.add(idNode.asText());
-      });
-    }
-    catch (Exception e)
-    {
-      System.err.println("Error parsing JSON: " + e.getMessage());
-      e.printStackTrace();
-    }
-
-    return result;
-  }
-
-  private static IconSetData generateAll()
-  {
-    IconSetData all;
-    
-      all= new IconSetData();
-      all.setId(ALL);
-      all.setName("All");
-      
-      return all;
-  }
-  
-  private static IconSetData parseIconify(String name)
-  {
-    ObjectReader reader;
-    String url;
-
-    url = "/module-resources/iconify/" + name + ".json";
-    reader = new ObjectMapper().reader();
-    
-    System.out.println("parseIconify: " + url);
-    try (InputStream is = IconSetData.class.getResourceAsStream(url))
-    {
-      JsonNode rootNode;
-      JsonNode infoNode;
-      IconSetData iconSetData;
-      Map<String, IconData> iconMap;
-
-      iconMap = new HashMap<>();
-
-      rootNode = reader.readTree(IconSetData.class.getResourceAsStream(url));
-      iconSetData = new IconSetData();
-
-      iconSetData.setId(rootNode.path("prefix").asText());
-      iconSetData.setPrefix(rootNode.path("prefix").asText());
-
-      iconSetData.setLeft(rootNode.path("left").asInt(ICONIFY_DEFAULT_LEFT));
-      iconSetData.setTop(rootNode.path("top").asInt(ICONIFY_DEFAULT_TOP));
-      iconSetData.setWidth(rootNode.path("width").asInt(ICONIFY_DEFAULT_WIDTH));
-      iconSetData.setHeight(rootNode.path("height").asInt(ICONIFY_DEFAULT_HEIGHT));
-      iconSetData.setRotate(Rotation.get(rootNode.path("rotate").asInt(ICONIFY_DEFAULT_ROTATE.get())));
-      iconSetData.setHFlip(Flip.get(rootNode.path("hFlip").asBoolean(ICONIFY_DEFAULT_HFLIP.get())));
-      iconSetData.setVFlip(Flip.get(rootNode.path("vFlip").asBoolean(ICONIFY_DEFAULT_VFLIP.get())));
-
-      infoNode = rootNode.path("info");
-      iconSetData.setName(infoNode.path("id").asText());
-      iconSetData.setName(infoNode.path("name").asText());
-      iconSetData.setNumberOfIcons(infoNode.path("total").asInt());
-      iconSetData.setVersion(infoNode.path("version").asText());
-      iconSetData.setAuthor(infoNode.path("author").path("name").asText());
-      iconSetData.setProjectURL(infoNode.path("author").path("url").asText());
-      iconSetData.setCategory(infoNode.path("category").asText());
-      iconSetData.setLicenseName(infoNode.path("license").path("spdx").asText());
-      iconSetData.setLicenseURL(infoNode.path("license").path("url").asText());
-
-      rootNode.path("icons").properties().stream().forEach(e -> {
-        String iconName;
-        JsonNode iconNode;
-        IconData iconData;
-
-        iconName = e.getKey();
-        iconNode = e.getValue();
-
-        iconData = iconSetData.addIcon();
-        iconData.setName(iconName);
-        iconData.setSVGText(iconNode.path("body").asText());
-        iconData.setLeft(iconNode.path("left").asInt(iconSetData.getLeft()));
-        iconData.setTop(iconNode.path("top").asInt(iconSetData.getTop()));
-        iconData.setWidth(iconNode.path("width").asInt(iconSetData.getWidth()));
-        iconData.setHeight(iconNode.path("height").asInt(iconSetData.getHeight()));
-        iconData.setRotate(
-            iconSetData.getRotate().add(Rotation.get(iconNode.path("rotate").asInt(ICONIFY_DEFAULT_ROTATE.get()))));
-        iconData.setHFlip(
-            iconSetData.getHFlip().add(Flip.get(iconNode.path("hFlip").asBoolean(ICONIFY_DEFAULT_HFLIP.get()))));
-        iconData.setVFlip(
-            iconSetData.getVFlip().add(Flip.get(iconNode.path("vFlip").asBoolean(ICONIFY_DEFAULT_VFLIP.get()))));
-
-        iconMap.put(iconData.getName(), iconData);
-      });
-
-      rootNode.path("aliases").properties().stream().forEach(e -> {
-        String aliasName;
-        JsonNode aliasNode;
-        String parentName;
-        IconData parentIconData;
-
-        aliasName = e.getKey();
-        aliasNode = e.getValue();
-        parentName = aliasNode.path("parent").asText();
-        parentIconData = iconMap.get(parentName);
-        if (parentIconData != null)
-        {
-          IconData aliasIconData;
-
-          aliasIconData = iconSetData.addIcon();
-          parentIconData.addAlias(aliasName);
-
-          aliasIconData.setName(aliasName);
-          aliasIconData.setLeft(aliasNode.path("left").asInt(parentIconData.getLeft()));
-          aliasIconData.setTop(aliasNode.path("top").asInt(parentIconData.getTop()));
-          aliasIconData.setWidth(aliasNode.path("width").asInt(parentIconData.getWidth()));
-          aliasIconData.setHeight(aliasNode.path("height").asInt(parentIconData.getHeight()));
-          aliasIconData.setSVGText(parentIconData.getSVGText());
-          aliasIconData.setRotate(Rotation.get(aliasNode.path("rotate").asInt(ICONIFY_DEFAULT_ROTATE.get()))
-              .add(parentIconData.getRotate()));
-          aliasIconData.setHFlip(
-              Flip.get(aliasNode.path("hFlip").asBoolean(ICONIFY_DEFAULT_HFLIP.get())).add(parentIconData.getHFlip()));
-          aliasIconData.setVFlip(
-              Flip.get(aliasNode.path("vFlip").asBoolean(ICONIFY_DEFAULT_VFLIP.get())).add(parentIconData.getVFlip()));
-        }
-      });
-
-      rootNode.path("categories").properties().stream().forEach(e -> {
-        String categorieName;
-        JsonNode categorieNode;
-
-        categorieName = e.getKey();
-        categorieNode = e.getValue();
-
-        categorieNode.elements().forEachRemaining(iconName -> {
-          IconData icon;
-
-          icon = iconMap.get(iconName.asText());
-          if (icon != null)
-          {
-            icon.addCategory(categorieName);
-            m_allCategoryList.add(categorieName);
-          }
-        });
-      });
-
-      return iconSetData;
-    }
-    catch (Exception e)
-    {
-      System.err.println("Error parsing JSON: " + e.getMessage());
-      e.printStackTrace();
-    }
-    
-    return null;
-  }
-
-  public static IconData searchIconData(String iconId)
-  {
-    Optional<IconSetDataHolder> iconSetDataHolder;
-    
-    iconSetDataHolder = getIconSetDataByIdMap().values().stream().filter(holder -> iconId.startsWith(holder.getPrefix())).findFirst();
-    if(iconSetDataHolder.isPresent())
-    {
-      return iconSetDataHolder.get().getIconSetData().getIconDataByIdMap().get(iconId);
-    }
-
-    return null;
   }
 
   @Override
