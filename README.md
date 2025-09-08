@@ -33,7 +33,8 @@ Learn about addBadge() method.
 
 <img width="148" height="144" alt="image" src="https://github.com/user-attachments/assets/2eabb171-2931-4399-97af-d122ff9e618f" />
 
-## IconViewer
+## IconViewer  
+All icons can be viewed and filtered with the JavaFX appication 'IconViewer'.
 Clone the repository and execute 'gradlew run' to inspect all available icon sets:
 <pre>
     git clone https://github.com/MrKuip/Iconify4J.git
