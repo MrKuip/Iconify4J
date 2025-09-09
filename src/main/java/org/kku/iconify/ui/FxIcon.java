@@ -216,15 +216,47 @@ public class FxIcon
       graphics.save();
       try
       {
+        double svgWidth;
+        double svgHeight;
+        double documentWidth;
+        double documentHeight;
         double scaleX;
         double scaleY;
         double scale;
 
-        scaleX = getWidth() / m_document.size().getWidth();
-        scaleY = getHeight() / m_document.size().getHeight();
+        svgWidth = getWidth();
+        svgHeight = getHeight();
+        documentWidth = m_document.size().getWidth();
+        documentHeight = m_document.size().getHeight();
+
+        // undo all transforms that might exist. (Safety precaution)
+        graphics.setTransform(1, 0, 0, 1, 0, 0);
+
+        // Calculate the scale that the SVG document fits this canvas
+        scaleX = svgWidth / documentWidth;
+        scaleY = svgHeight / documentHeight;
         scale = Math.min(scaleX, scaleY);
 
-        graphics.setTransform(1, 0, 0, 1, 0, 0);
+        // Make sure the SVG document is centered in this canvas
+        if (scaleY != scaleX)
+        {
+          double centerX;
+          double centerY;
+
+          if (scaleY > scaleX)
+          {
+            centerX = 0;
+            centerY = (svgHeight - documentHeight * scale) / 2.0;
+          }
+          else
+          {
+            centerX = (svgWidth - documentWidth * scale) / 2.0;
+            centerY = 0;
+          }
+          graphics.translate(centerX, centerY);
+        }
+
+        // A Iconify icon can have a rotate defined.
         if (hasRotate())
         {
           Rotate rotate;
@@ -233,12 +265,16 @@ public class FxIcon
           graphics.setTransform(rotate.getMxx(), rotate.getMyx(), rotate.getMxy(), rotate.getMyy(), rotate.getTx(),
               rotate.getTy());
         }
+        // A Iconify icon can have a flip defined.
         if (hasFlip())
         {
           graphics.translate(m_hFlip.get() ? getWidth() : 0, m_vFlip.get() ? getHeight() : 0);
           graphics.scale(m_hFlip.get() ? -1 : 1, m_vFlip.get() ? -1 : 1);
         }
+
+        // Perform the calculated scale to fit the SVG document in this canvas.
         graphics.scale(scale, scale);
+
         graphics.setGlobalAlpha(1D);
         graphics.setGlobalBlendMode(BlendMode.SRC_OVER);
         FXSVGRenderer.render(m_document, getGraphicsContext2D());
@@ -259,41 +295,38 @@ public class FxIcon
               double translateY;
 
               document = SVGUtil.createDocument(badge.getFxIcon().getParsedSVGText());
-              badgeScaleX = badge.getFxIcon().getSize().getWidth() / getWidth();
-              badgeScaleY = badge.getFxIcon().getSize().getHeight() / getHeight();
+              badgeScaleX = badge.getFxIcon().getSize().getWidth() / svgWidth;
+              badgeScaleY = badge.getFxIcon().getSize().getHeight() / svgHeight;
               badgeScale = Math.min(badgeScaleX, badgeScaleY);
-              System.out.println("getWidth()=" + getWidth());
-              System.out.println("badge.width=" + badge.getFxIcon().getSize().getHeight());
-              System.out.println("badgeScale=" + badgeScale);
 
               switch (badge.mi_alignment)
               {
                 case CENTER_CENTER:
-                  translateX = (getWidth() * (1 - badgeScale)) / 2;
-                  translateY = (getHeight() * (1 - badgeScale)) / 2;
+                  translateX = (svgWidth * (1 - badgeScale)) / 2;
+                  translateY = (svgHeight * (1 - badgeScale)) / 2;
                   break;
                 case CENTER_LEFT:
                   translateX = 0;
-                  translateY = (getHeight() * (1 - badgeScale)) / 2;
+                  translateY = (svgHeight * (1 - badgeScale)) / 2;
                   break;
                 case CENTER_RIGHT:
-                  translateX = getWidth() * (1 - badgeScale);
-                  translateY = (getHeight() * (1 - badgeScale)) / 2;
+                  translateX = svgWidth * (1 - badgeScale);
+                  translateY = (svgHeight * (1 - badgeScale)) / 2;
                   break;
                 case LOWER_CENTER:
-                  translateX = (getWidth() * (1 - badgeScale)) / 2;
-                  translateY = getHeight() * (1 - badgeScale);
+                  translateX = (svgWidth * (1 - badgeScale)) / 2;
+                  translateY = svgHeight * (1 - badgeScale);
                   break;
                 case LOWER_LEFT:
                   translateX = 0;
-                  translateY = getHeight() * (1 - badgeScale);
+                  translateY = svgHeight * (1 - badgeScale);
                   break;
                 case LOWER_RIGHT:
-                  translateX = getWidth() * (1 - badgeScale);
-                  translateY = getHeight() * (1 - badgeScale);
+                  translateX = svgWidth * (1 - badgeScale);
+                  translateY = svgHeight * (1 - badgeScale);
                   break;
                 case UPPER_CENTER:
-                  translateX = (getWidth() * (1 - badgeScale)) / 2;
+                  translateX = (svgWidth * (1 - badgeScale)) / 2;
                   translateY = 0.0;
                   break;
                 case UPPER_LEFT:
@@ -301,7 +334,7 @@ public class FxIcon
                   translateY = 0.0;
                   break;
                 case UPPER_RIGHT:
-                  translateX = getWidth() * (1 - badgeScale);
+                  translateX = svgWidth * (1 - badgeScale);
                   translateY = 0.0;
                   break;
                 default:
