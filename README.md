@@ -10,7 +10,7 @@ The animated icons in the sets do not work (yet)
 Learn about size(), color() properties.
 <pre>
 
-    button = new Button("", new FxIcon("mdi-filter").getIconNode());
+    button = new Button("", new FxIcon("mdi-filter").getNode());
     label = new Label("", new FxIcon("ant-design-filter-twotone").size(IconSize.BIG).getNode());
     button3 = new Button("", new FxIcon("streamline-ultimate-color-filter-1").size(IconSize.HUGE).color(Color.PURPLE).getNode());
     
