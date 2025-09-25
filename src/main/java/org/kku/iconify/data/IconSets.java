@@ -2,7 +2,6 @@ package org.kku.iconify.data;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -31,8 +30,6 @@ public class IconSets
   private static Flip ICONIFY_DEFAULT_HFLIP = Flip.FALSE;
   private static Flip ICONIFY_DEFAULT_VFLIP = Flip.FALSE;
 
-  public static final String ALL = "ALL";
-
   private Map<String, IconSetDataHolder> m_iconSetDataByIdMap;
   private List<IconSetData> m_iconSetDataList;
   private Set<String> m_allCategoryList = new HashSet<>();
@@ -46,11 +43,11 @@ public class IconSets
     return INSTANCE;
   }
 
-  public synchronized Collection<IconSetData> getIconSetDataCollection()
+  public synchronized List<IconSetData> getIconSetDataList()
   {
     if (m_iconSetDataList == null)
     {
-      m_iconSetDataList = getIconSetDataByIdMap().values().stream().map(IconSetDataHolder::getIconSetData)
+      m_iconSetDataList = getIconSetDataByIdMap().values().stream().map(IconSetDataHolder::get)
           .collect(Collectors.toList());
     }
 
@@ -62,8 +59,6 @@ public class IconSets
     if (m_iconSetDataByIdMap == null)
     {
       m_iconSetDataByIdMap = new LinkedHashMap<>();
-      m_iconSetDataByIdMap.put(ALL, new IconSetDataHolder(ALL, "all", () -> generateAll()));
-
       for (String id : parseIconifyIconSets())
       {
         m_iconSetDataByIdMap.put(id, new IconSetDataHolder(id, id, () -> parseIconify(id)));
@@ -98,17 +93,6 @@ public class IconSets
     }
 
     return result;
-  }
-
-  private static IconSetData generateAll()
-  {
-    IconSetData all;
-
-    all = new IconSetData();
-    all.setId(ALL);
-    all.setName("All");
-
-    return all;
   }
 
   private IconSetData parseIconify(String name)
@@ -248,7 +232,7 @@ public class IconSets
         .filter(holder -> iconId.startsWith(holder.getPrefix())).findFirst();
     if (iconSetDataHolder.isPresent())
     {
-      return iconSetDataHolder.get().getIconSetData().getIconDataByIdMap().get(iconId);
+      return iconSetDataHolder.get().get().getIconDataByIdMap().get(iconId);
     }
 
     return null;

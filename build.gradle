@@ -16,6 +16,12 @@ defaultTasks 'jar'
 
 apply from: 'build-eclipse.gradle'
 
+eclipse.classpath
+{
+  downloadSources = true
+  downloadJavadoc = true
+}
+
 repositories {
   mavenCentral()
 }
@@ -30,10 +36,6 @@ java {
   withSourcesJar()
   sourceCompatibility = JavaVersion.VERSION_11
   targetCompatibility = JavaVersion.VERSION_11
-
-  toolchain {
-    languageVersion = JavaLanguageVersion.of(11)
-  }
 }
 
 test
@@ -50,17 +52,13 @@ test
 dependencies {
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
   implementation 'com.miglayout:miglayout-javafx:11.4.2'
-  implementation files('lib/jsvg-javafx-2.0.1-SNAPSHOT.jar')
-  implementation files('lib/jsvg-2.0.1-SNAPSHOT.jar')
+  implementation files('lib/jsvg-javafx-2.0.1-SNAPSHOT.jar') 
+  implementation files('lib/jsvg-2.0.1-SNAPSHOT.jar') 
 
   testImplementation 'org.junit.jupiter:junit-jupiter:5.13.2'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-application {
-  mainClass.set('org.kku.iconify.main.IconViewer');
-  mainModule.set('org.kku.iconify');
-}
 
 tasks.jar {
   manifest {

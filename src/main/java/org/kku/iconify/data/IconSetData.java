@@ -94,11 +94,6 @@ public class IconSetData
   {
   }
 
-  public boolean isAll()
-  {
-    return IconSets.ALL.equals(getId());
-  }
-
   public void setId(String id)
   {
     m_id = id;
@@ -333,7 +328,7 @@ public class IconSetData
       return mi_prefix;
     }
 
-    public IconSetData getIconSetData()
+    public IconSetData get()
     {
       if (mi_iconSetData == null)
       {
@@ -520,6 +515,7 @@ public class IconSetData
     }
 
     public class Category
+        implements Comparable<Category>
     {
       private final String mi_category;
       private final String mi_categoryLowerCase;
@@ -538,6 +534,35 @@ public class IconSetData
       public String getCategoryLowerCase()
       {
         return mi_categoryLowerCase;
+      }
+
+      @Override
+      public boolean equals(Object other)
+      {
+        if (other instanceof Category)
+        {
+          return getCategory().equals(((Category) other).getCategory());
+        }
+
+        return super.equals(other);
+      }
+
+      @Override
+      public int hashCode()
+      {
+        return getCategory().hashCode();
+      }
+
+      @Override
+      public int compareTo(Category o)
+      {
+        return getCategory().compareTo(o.getCategory());
+      }
+
+      @Override
+      public String toString()
+      {
+        return getCategory().toString();
       }
     }
 
