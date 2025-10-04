@@ -15,6 +15,11 @@ public class SVGUtil
 
   public static final SVGDocument createDocument(String svg) throws IOException
   {
+    if (svg == null)
+    {
+      return null;
+    }
+
     try (InputStream is = new ByteArrayInputStream(svg.getBytes()))
     {
       return new SVGLoader().load(is, null, LoaderContext.createDefault());
