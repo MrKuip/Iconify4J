@@ -1,12 +1,12 @@
 package org.kku.iconify.util;
 
-import javafx.scene.paint.Color;
+import java.awt.Color;
 
 public class ColorUtil
 {
   public static String toRgb(Color color)
   {
-    return "rgba(" + ((int) (color.getRed() * 255.0)) + "," + ((int) (color.getGreen() * 255.0)) + ","
-        + ((int) (color.getBlue() * 255.0)) + ", " + color.getOpacity() + ")";
+    return "rgba(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + ", " + (color.getAlpha() / 255.0)
+        + ")";
   }
 }
