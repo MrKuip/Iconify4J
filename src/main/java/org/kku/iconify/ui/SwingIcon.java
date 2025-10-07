@@ -8,17 +8,17 @@ import org.kku.iconify.data.IconSetData.IconData;
 public class SwingIcon
   extends AbstractIcon
 {
-  SwingIcon(String iconId)
+  public SwingIcon(String iconId)
   {
     super(iconId);
   }
 
-  SwingIcon(IconData iconData)
+  public SwingIcon(IconData iconData)
   {
     super(iconData);
   }
 
-  SwingIcon(SwingIcon other)
+  public SwingIcon(SwingIcon other)
   {
     this(other.getIconData());
     setSize(other.getSize());
@@ -28,11 +28,6 @@ public class SwingIcon
   public Icon get()
   {
     return getIcon();
-  }
-
-  public SwingIcon create()
-  {
-    return SwingIcons.create(getIconData());
   }
 
   public SwingIcon size(IconSize size)

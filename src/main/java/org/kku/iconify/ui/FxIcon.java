@@ -13,17 +13,17 @@ import javafx.scene.paint.Color;
 public class FxIcon
   extends AbstractIcon
 {
-  FxIcon(String iconId)
+  public FxIcon(String iconId)
   {
     super(iconId);
   }
 
-  FxIcon(IconData iconData)
+  public FxIcon(IconData iconData)
   {
     super(iconData);
   }
 
-  FxIcon(FxIcon other)
+  public FxIcon(FxIcon other)
   {
     this(other.getIconData());
     setSize(other.getSize());
@@ -44,11 +44,6 @@ public class FxIcon
     bufferedImage = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
     icon.paintIcon(null, bufferedImage.getGraphics(), 0, 0);
     return SwingFXUtils.toFXImage(bufferedImage, null);
-  }
-
-  public FxIcon create()
-  {
-    return FxIcons.create(getIconData());
   }
 
   public Node getNode()
