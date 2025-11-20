@@ -5,6 +5,7 @@ module org.kku.iconify4j
   requires com.github.weisj.jsvg;
   requires com.fasterxml.jackson.databind;
   requires javafx.swing;
+  requires java.desktop;
 
   exports org.kku.iconify.ui;
   exports org.kku.iconify.data;
