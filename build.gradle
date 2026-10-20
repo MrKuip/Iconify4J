@@ -41,25 +41,21 @@ java {
 test
 {
   useJUnitPlatform()
+  outputs.upToDateWhen { false }
   testLogging {
     showStandardStreams = true 
+    events "passed", "skipped", "failed"
+    exceptionFormat "full"
   }
-  addTestListener(new TestListener() {
-    @Override
-    void afterTest(TestDescriptor descriptor, TestResult result) {
-      logger.lifecycle("Test: " + descriptor.getClassName() + " " + descriptor.getName() + " -> " + result)
-    }
-  })
 }
 
 dependencies {
   implementation 'tools.jackson.core:jackson-databind:3.2.3'
-  //implementation files('lib/jsvg-javafx-2.0.1-SNAPSHOT.jar') 
-  //implementation files('lib/jsvg-2.0.1-SNAPSHOT.jar') 
   implementation 'com.github.weisj:jsvg:2.2.0'
   implementation 'com.github.weisj:jsvg-javafx:2.2.0'
 
-  testImplementation 'org.junit.jupiter:junit-jupiter:5.13.2'
+  testImplementation platform('org.junit:junit-bom:5.14.4')
+  testImplementation 'org.junit.jupiter:junit-jupiter'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
