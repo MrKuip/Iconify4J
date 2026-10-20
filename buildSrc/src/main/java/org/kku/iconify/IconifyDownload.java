@@ -14,12 +14,14 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.gradle.api.logging.Logger;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
+import tools.jackson.core.json.JsonFactory;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.PrettyPrinter;
+import tools.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.core.ObjectWriteContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectReader;
 
 /**
  * Retrieves all icon sets from Iconify.
@@ -211,18 +213,25 @@ class IconifyDownload
   private void generateIconifyIconsFile() throws Exception
   {
     Path jsonPath;
+    ObjectWriteContext writeContext;
+
+    writeContext = new ObjectWriteContext.Base() {
+      @Override
+      public PrettyPrinter getPrettyPrinter() {
+        return new DefaultPrettyPrinter();
+      }
+    };
+
 
     jsonPath = m_destinationDir.resolve("IconifyIconSets.json");
     try (BufferedWriter jsonWriter = Files.newBufferedWriter(jsonPath);
-        JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter))
+        JsonGenerator jsonGenerator = new JsonFactory().createGenerator(writeContext, jsonWriter))
     {
       String[] iconSetArray;
 
-      jsonGenerator.setPrettyPrinter(new DefaultPrettyPrinter());
-
       iconSetArray = m_iconSetList.stream().map(IconSet::id).sorted().toArray(String[]::new);
       jsonGenerator.writeStartObject();
-      jsonGenerator.writeFieldName("icon-sets");
+      jsonGenerator.writeName("icon-sets");
       jsonGenerator.writeArray(iconSetArray, 0, iconSetArray.length);
       jsonGenerator.writeEndObject();
 

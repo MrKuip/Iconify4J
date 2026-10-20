@@ -14,9 +14,9 @@ import org.kku.iconify.data.IconSetData.Flip;
 import org.kku.iconify.data.IconSetData.IconData;
 import org.kku.iconify.data.IconSetData.IconSetDataHolder;
 import org.kku.iconify.data.IconSetData.Rotation;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectReader;
 
 public class IconSets
 {
@@ -201,7 +201,7 @@ public class IconSets
         categorieName = e.getKey();
         categorieNode = e.getValue();
 
-        categorieNode.elements().forEachRemaining(iconName -> {
+        categorieNode.values().forEach(iconName -> {
           IconData icon;
 
           icon = iconMap.get(iconName.asText());

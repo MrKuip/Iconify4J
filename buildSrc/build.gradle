@@ -39,7 +39,7 @@ test
 }
 
 dependencies {
-  implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+  implementation 'tools.jackson.core:jackson-databind:3.2.3'
   implementation gradleApi()
 
   testImplementation 'org.junit.jupiter:junit-jupiter:5.13.2'
