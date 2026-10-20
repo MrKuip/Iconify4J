@@ -54,9 +54,10 @@ test
 
 dependencies {
   implementation 'tools.jackson.core:jackson-databind:3.2.3'
-  implementation 'com.miglayout:miglayout-javafx:11.4.2'
-  implementation files('lib/jsvg-javafx-2.0.1-SNAPSHOT.jar') 
-  implementation files('lib/jsvg-2.0.1-SNAPSHOT.jar') 
+  //implementation files('lib/jsvg-javafx-2.0.1-SNAPSHOT.jar') 
+  //implementation files('lib/jsvg-2.0.1-SNAPSHOT.jar') 
+  implementation 'com.github.weisj:jsvg:2.2.0'
+  implementation 'com.github.weisj:jsvg-javafx:2.2.0'
 
   testImplementation 'org.junit.jupiter:junit-jupiter:5.13.2'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
