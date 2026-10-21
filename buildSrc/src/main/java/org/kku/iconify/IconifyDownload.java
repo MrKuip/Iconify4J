@@ -103,6 +103,7 @@ class IconifyDownload
           }
           else
           {
+            iconSet.setInstalled(true);
             info("uptodate : " + iconSetPath);
           }
         }
@@ -115,7 +116,15 @@ class IconifyDownload
       if (download)
       {
         info("download : " + iconSetPath);
-        downloadIconSetFile(iconSet.id());
+        try
+        {
+          downloadIconSetFile(iconSet.id());
+          iconSet.setInstalled(true);
+        }
+        catch(Exception ex)
+        {
+          info("Failed to download : " + iconSet.id());
+        }
       }
     }
   }
@@ -124,6 +133,7 @@ class IconifyDownload
   {
     private final String mi_id;
     private final int mi_lastModification;
+    private boolean mi_installed;
 
     private IconSet(String id, int lastModification)
     {
@@ -140,7 +150,16 @@ class IconifyDownload
     {
       return mi_lastModification;
     }
-    
+
+    public void setInstalled(boolean installed)
+    {
+      mi_installed = installed;
+    }
+
+    public boolean isInstalled()
+    {
+      return mi_installed;
+    }
   }
 
   private void createIconSetList(String lastModifiedFileJson) throws Exception
@@ -229,7 +248,7 @@ class IconifyDownload
     {
       String[] iconSetArray;
 
-      iconSetArray = m_iconSetList.stream().map(IconSet::id).sorted().toArray(String[]::new);
+      iconSetArray = m_iconSetList.stream().filter(IconSet::isInstalled).map(IconSet::id).sorted().toArray(String[]::new);
       jsonGenerator.writeStartObject();
       jsonGenerator.writeName("icon-sets");
       jsonGenerator.writeArray(iconSetArray, 0, iconSetArray.length);
