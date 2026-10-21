@@ -45,7 +45,7 @@ test
   testLogging {
     showStandardStreams = true 
     events "passed", "skipped", "failed"
-    exceptionFormat "full"
+    exceptionFormat = "full"
   }
 }
 
