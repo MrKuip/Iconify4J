@@ -27,7 +27,7 @@ repositories {
 }
 
 javafx {
-    version = "17"
+    version = "26"
     modules = [ 'javafx.controls', 'javafx.swing' ]
 }
 
@@ -52,7 +52,6 @@ test
 dependencies {
   implementation 'tools.jackson.core:jackson-databind:3.2.3'
   implementation 'com.github.weisj:jsvg:2.2.0'
-  implementation 'com.github.weisj:jsvg-javafx:2.2.0'
 
   testImplementation platform('org.junit:junit-bom:5.14.4')
   testImplementation 'org.junit.jupiter:junit-jupiter'
