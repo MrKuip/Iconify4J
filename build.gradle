@@ -7,6 +7,7 @@ plugins {
   id 'eclipse'
   id 'application'
   id 'org.openjfx.javafxplugin' version '0.1.0'
+  id 'maven-publish'
 }
 
 group = "org.kku"
