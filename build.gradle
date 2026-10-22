@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "org.kku"
-version = "1.0.3"
+version = "1.1.0"
 
 defaultTasks 'jar'
 
@@ -84,7 +84,8 @@ publishing {
   publications {
     library(MavenPublication) {
       from components.java
-      artifactId = 'Iconify4j'
+      artifactId = 'iconify4j'
+      version = project.version
     }
   }
 
