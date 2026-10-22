@@ -11,6 +11,7 @@ plugins {
 }
 
 group = "org.kku"
+version = "1.0.3"
 
 defaultTasks 'jar'
 
@@ -71,11 +72,14 @@ tasks.register("iconify", org.kku.iconify.IconifyTask) {
     collectionURL.set("https://github.com/iconify/icon-sets/raw/refs/heads/master/collections.json")
 }
 
+tasks.named("sourcesJar") {
+    dependsOn(tasks.named("iconify"))
+}
+
 tasks.named("processResources") {
     dependsOn(tasks.named("iconify"))
 }
 
-version = "1.0.1"
 publishing {
   publications {
     library(MavenPublication) {
